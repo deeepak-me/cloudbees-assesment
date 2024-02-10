@@ -22,7 +22,7 @@ export default function Home() {
       .catch((err) => console.log(err));
   }, []);
 
-  console.log(users);
+  // console.log(users);
 
   return (
     <Box
