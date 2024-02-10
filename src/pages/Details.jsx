@@ -8,6 +8,28 @@ import { Link, useParams } from "react-router-dom";
 import axios from "axios";
 
 export default function Details() {
+  const { username } = useParams();
+  const [user, setUser] = React.useState(null);
+  const [error, setError] = React.useState();
+
+  React.useEffect(() => {
+    axios
+      .get(`https://api.github.com/users/${username}`)
+      .then((res) => {
+        setUser(res.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching user details:", error);
+        setError(error.message);
+      });
+  }, []);
+
+  console.log(user);
+
+  if (error) {
+    return <Typography variant="h4">Error: {error} User Not Found</Typography>;
+  }
+
   return (
     <Box
       display="flex"
