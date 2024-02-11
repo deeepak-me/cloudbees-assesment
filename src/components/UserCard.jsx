@@ -12,31 +12,22 @@ const UserCard = ({ user }) => {
   return (
     <ListItem
       key={user.id}
-      alignItems="flex-start"
+      alignItems="center"
       button
       component={Link}
       to={`/user/${user.login}`}
-      sx={{ gap: 4, border: 0.2, borderRadius: 4, mb: 2 }}
+      sx={{
+        gap: 4,
+        border: 0.2,
+        borderRadius: 4,
+        mb: 2,
+        fontFamily: "YourCustomFont, sans-serif",
+      }}
     >
       <ListItemAvatar>
         <Avatar alt="Remy Sharp" src={user.avatar_url} />
       </ListItemAvatar>
-      <ListItemText
-        // primary={`${user.firstname} ${user.lastname}`}
-        primary={user.login}
-        // secondary={
-        //   <React.Fragment>
-        //     <Typography
-        //       sx={{ display: "inline" }}
-        //       component="span"
-        //       variant="body2"
-        //       color="text.primary"
-        //     >
-        //       {/* {user.login} */}
-        //     </Typography>
-        //   </React.Fragment>
-        // }
-      />
+      <ListItemText primary={user.login} sx={{ padding: 2, ml: 2 }} />
     </ListItem>
   );
 };
