@@ -9,24 +9,32 @@ const DetailsCard = ({ user }) => {
   return (
     <div>
       <Card sx={{ width: 345, borderRadius: 6 }}>
-        <CardActionArea>
+        <CardActionArea sx={{ display: "flex", flexDirection: "column" }}>
           <CardMedia
             component="img"
-            height="140"
+            height="170"
             image={user.avatar_url}
             alt={user.username}
           />
-          <CardContent>
-            <Typography variant="h5" component="div">
+          <CardContent
+            sx={{ flex: 1, fontFamily: "YourCustomFont, sans-serif" }}
+          >
+            <Typography variant="h5" component="div" gutterBottom>
               {user.name}
             </Typography>
-            <Typography variant="body1">Username: {user.login}</Typography>
-            <Typography variant="body1">
+            <Typography variant="body1" gutterBottom>
+              Username: {user.login}
+            </Typography>
+            <Typography variant="body1" gutterBottom>
               Company: {user.company || "N/A"}
             </Typography>
-            <Typography variant="body1">Followers: {user.followers}</Typography>
-            <Typography variant="body1">Following: {user.following}</Typography>
-            <Typography variant="body1">
+            <Typography variant="body1" gutterBottom>
+              Followers: {user.followers}
+            </Typography>
+            <Typography variant="body1" gutterBottom>
+              Following: {user.following}
+            </Typography>
+            <Typography variant="body1" gutterBottom>
               Public Repositories: {user.public_repos}
             </Typography>
           </CardContent>
