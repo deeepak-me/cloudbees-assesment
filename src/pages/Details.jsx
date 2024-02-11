@@ -11,18 +11,22 @@ export default function Details() {
   const [error, setError] = React.useState();
 
   React.useEffect(() => {
-    axios
-      .get(`https://api.github.com/users/${username}`)
-      .then((res) => {
-        setUser(res.data);
-      })
-      .catch((error) => {
-        console.error("Error fetching user details:", error);
-        setError(error.message);
-      });
+    fetchUser();
   }, []);
 
-  console.log(user);
+  async function fetchUser() {
+    try {
+      const user = await axios.get(`https://api.github.com/users/${username}`, {
+        headers: {
+          "X-GitHub-Api-Version": "2022-11-28",
+        },
+      });
+
+      setUser(user.data);
+    } catch (err) {
+      console.error(err);
+    }
+  }
 
   if (error) {
     return <Typography variant="h4">Error: {error} User Not Found</Typography>;
@@ -37,7 +41,12 @@ export default function Details() {
       justifyContent={"space-between"}
       sx={{ gap: 2 }}
     >
-      <Typography variant="h4">USER DETAILS</Typography>
+      <Typography
+        variant="h4"
+        sx={{ fontFamily: "YourCustomFont, sans-serif" }}
+      >
+        USER DETAILS
+      </Typography>
       {user && <DetailsCard user={user} />}
       <Button variant="contained" component={Link} to={`/`}>
         Go Back
