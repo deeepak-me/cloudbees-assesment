@@ -10,18 +10,22 @@ export default function Home() {
   const [searchTerm, setSearchTerm] = React.useState("");
 
   React.useEffect(() => {
-    axios
-      .get("https://api.github.com/users", {
+    fetchUsers();
+  }, []);
+
+  async function fetchUsers() {
+    try {
+      const users = await axios.get("https://api.github.com/users", {
         headers: {
           "X-GitHub-Api-Version": "2022-11-28",
         },
-      })
-      .then((res) => {
-        setUsers(res.data);
-      })
-      .catch((err) => console.log(err));
-  }, []);
-  console.log(users);
+      });
+
+      setUsers(users.data);
+    } catch (err) {
+      console.error(err);
+    }
+  }
 
   const handleSearchChange = (event) => {
     setSearchTerm(event.target.value);
@@ -40,7 +44,12 @@ export default function Home() {
       justifyContent={"space-between"}
       sx={{ gap: 2 }}
     >
-      <Typography variant="h4">USER LIST</Typography>
+      <Typography
+        variant="h4"
+        sx={{ fontFamily: "YourCustomFont, sans-serif" }}
+      >
+        USER LIST
+      </Typography>
       <TextField
         label="Search"
         variant="outlined"
