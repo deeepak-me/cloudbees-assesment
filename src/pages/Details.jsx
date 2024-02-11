@@ -1,15 +1,13 @@
 import * as React from "react";
-import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
-import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
-import { Box, Button, CardActionArea, Container } from "@mui/material";
+import { Box, Button } from "@mui/material";
 import { Link, useParams } from "react-router-dom";
 import axios from "axios";
+import DetailsCard from "../components/DetailsCard";
 
 export default function Details() {
   const { username } = useParams();
-  const [user, setUser] = React.useState(null);
+  const [user, setUser] = React.useState([]);
   const [error, setError] = React.useState();
 
   React.useEffect(() => {
@@ -40,36 +38,7 @@ export default function Details() {
       sx={{ gap: 2 }}
     >
       <Typography variant="h4">USER DETAILS</Typography>
-      {user && (
-        <Card sx={{ width: 345, borderRadius: 6 }}>
-          <CardActionArea>
-            <CardMedia
-              component="img"
-              height="140"
-              image={user.avatar_url}
-              alt={user.username}
-            />
-            <CardContent>
-              <Typography variant="h5" component="div">
-                {user.name}
-              </Typography>
-              <Typography variant="body1">Username: {user.login}</Typography>
-              <Typography variant="body1">
-                Company: {user.company || "N/A"}
-              </Typography>
-              <Typography variant="body1">
-                Followers: {user.followers}
-              </Typography>
-              <Typography variant="body1">
-                Following: {user.following}
-              </Typography>
-              <Typography variant="body1">
-                Public Repositories: {user.public_repos}
-              </Typography>
-            </CardContent>
-          </CardActionArea>
-        </Card>
-      )}
+      {user && <DetailsCard user={user} />}
       <Button variant="contained" component={Link} to={`/`}>
         Go Back
       </Button>
