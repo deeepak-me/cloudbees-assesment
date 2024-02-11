@@ -1,28 +1,35 @@
 import * as React from "react";
 import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
-import Divider from "@mui/material/Divider";
-import ListItemText from "@mui/material/ListItemText";
-import ListItemAvatar from "@mui/material/ListItemAvatar";
-import Avatar from "@mui/material/Avatar";
 import Typography from "@mui/material/Typography";
 import axios from "axios";
-import { Link } from "react-router-dom";
-import { Box, Container } from "@mui/material";
+import { Box, TextField } from "@mui/material";
+import UserCard from "../components/UserCard";
 
 export default function Home() {
   const [users, setUsers] = React.useState([]);
+  const [searchTerm, setSearchTerm] = React.useState("");
 
   React.useEffect(() => {
     axios
-      .get("https://api.github.com/users")
+      .get("https://api.github.com/users", {
+        headers: {
+          "X-GitHub-Api-Version": "2022-11-28",
+        },
+      })
       .then((res) => {
         setUsers(res.data);
       })
       .catch((err) => console.log(err));
   }, []);
+  console.log(users);
 
-  // console.log(users);
+  const handleSearchChange = (event) => {
+    setSearchTerm(event.target.value);
+  };
+
+  const filteredUsers = users.filter((user) =>
+    user.login.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   return (
     <Box
@@ -34,6 +41,15 @@ export default function Home() {
       sx={{ gap: 2 }}
     >
       <Typography variant="h4">USER LIST</Typography>
+      <TextField
+        label="Search"
+        variant="outlined"
+        value={searchTerm}
+        onChange={handleSearchChange}
+        fullWidth
+        style={{ marginBottom: "20px" }}
+        sx={{ width: 300 }}
+      />
       <List
         sx={{
           width: "100%",
@@ -42,38 +58,8 @@ export default function Home() {
           gap: 4,
         }}
       >
-        {users.map((user) => (
-          <>
-            <ListItem
-              key={user.id}
-              alignItems="flex-start"
-              button
-              component={Link}
-              to={`/user/${user.login}`}
-              sx={{ gap: 4, border: 0.2, borderRadius: 4, mb: 2 }}
-            >
-              <ListItemAvatar>
-                <Avatar alt="Remy Sharp" src={user.avatar_url} />
-              </ListItemAvatar>
-              <ListItemText
-                // primary={`${user.firstname} ${user.lastname}`}
-                primary={user.name}
-                secondary={
-                  <React.Fragment>
-                    <Typography
-                      sx={{ display: "inline" }}
-                      component="span"
-                      variant="body2"
-                      color="text.primary"
-                    >
-                      {user.login}
-                    </Typography>
-                  </React.Fragment>
-                }
-              />
-            </ListItem>
-            {/* <Divider variant="inset" component="li" /> */}
-          </>
+        {filteredUsers.map((user) => (
+          <UserCard key={user.id} user={user} />
         ))}
       </List>
     </Box>
